@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\RoleAssignmentController;
+
+
 
 Route::get('/', function () {
     return view('user.home',[
@@ -57,5 +60,16 @@ Route::get('/profile', function () {
     ]);
 });
 
+Route::get('/profile', function () {
+    return view('user.profil.profil',[
+        "title" => "Profile"
+    ]);
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/roles', [RoleAssignmentController::class, 'index'])->name('roles.index');
+    Route::post('/roles', [RoleAssignmentController::class, 'store'])->name('roles.store');
+    Route::delete('/roles', [RoleAssignmentController::class, 'destroy'])->name('roles.destroy');
+});
 
 
