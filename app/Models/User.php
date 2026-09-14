@@ -35,4 +35,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(MasterRole::class, 'user_role', 'user_id', 'master_role_id');
     }
+
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()->where('role_name', $roleName)->exists();
+    }
 }

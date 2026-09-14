@@ -21,4 +21,4 @@ class MasterRole extends Model
     {
         return $this->belongsToMany(User::class, 'user_role', 'master_role_id', 'user_id');
     }
-}
+}   

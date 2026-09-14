@@ -32,7 +32,7 @@ class RoleAssignmentController extends Controller
 
         $this->roleAssignmentService->assign($validated['user_id'], $validated['role_name']);
 
-        return back()->with('success', 'Role berhasil di-assign.');
+        return back()->with('success', 'Role ditetapkan.');
     }
 
     public function destroy(Request $request): RedirectResponse
@@ -44,6 +44,6 @@ class RoleAssignmentController extends Controller
 
         $this->roleAssignmentService->revoke($validated['user_id'], $validated['role_name']);
 
-        return back()->with('success', 'Role berhasil dicabut.');
+        return back()->with('success', 'Role dicabut.');
     }
 }
