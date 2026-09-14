@@ -9,24 +9,46 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+#[Fillable(['username_intra', 'satker_id', 'satker_name', 'satker_type', 'name', 'email', 'password', 'status'])]
+#[Hidden(['password'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => 'boolean',
         ];
+    }
+
+    public function satker(): BelongsTo
+    {
+        return $this->belongsTo(Satker::class, 'satker_id');
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class, 'user_id');
+    }
+
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(Registration::class, 'user_id');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
+
+    public function surveyAnswers(): HasMany
+    {
+        return $this->hasMany(SurveyAnswer::class, 'user_id');
     }
 }
