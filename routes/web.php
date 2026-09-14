@@ -63,6 +63,30 @@ Route::get('/dashboard', function () {
     ]);
 });
 
+Route::get('/admin/events', function () {
+    return view('admin.events.event',[
+        "title" => "Events"
 
+    ]);
+});
 
+Route::get('/admin/events/create-event', function () {
+    return view('admin.events.create-event',[
+        "title" => "Events"
 
+    ]);
+});
+
+Route::get('/admin/registration', function () {
+    return view('admin.registration.registration',[
+        "title" => "Registration"
+
+    ]);
+});
+
+Route::get('admin/attendance', function () {
+    return view('admin.attendance.attendance',[
+        "title" => "Registration"
+
+    ]);
+});
