@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
+
 class RoleAssignmentService implements RoleAssignmentServiceInterface
 {
     public function __construct(

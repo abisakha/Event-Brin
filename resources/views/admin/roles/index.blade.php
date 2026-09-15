@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto px-6 lg:px-0 py-10">
-        <h1 class="text-2xl font-extrabold text-slate-900 mb-6">Manajemen Role & Permission</h1>
+        <h1 class="text-2xl font-extrabold text-slate-900 mb-6">Manajemen role_label & Permission</h1>
 
         @if (session('success'))
             <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
@@ -28,12 +28,12 @@
                             <td class="border border-gray-300 p-2">
                                 @forelse ($user->roles as $role)
                                     <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm mr-1 mb-1">
-                                        {{ $role->role_label ?? $role->role_name }}
+                                        {{ $role->role_intra ?? $role->name }}
                                         <form action="{{ route('admin.roles.destroy') }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                            <input type="hidden" name="role_name" value="{{ $role->role_name }}">
+                                            <input type="hidden" name="role_name" value="{{ $role->name }}">
                                             <button type="submit" class="text-red-600 hover:text-red-800" onclick="return confirm('Cabut role ini dari user?')">&times;</button>
                                         </form>
                                     </span>
@@ -48,7 +48,7 @@
                                     <select name="role_name" class="border rounded px-2 py-1 text-sm" required>
                                         <option value="">Pilih role</option>
                                         @foreach ($roles as $role)
-                                            <option value="{{ $role->role_name }}">{{ $role->role_label ?? $role->role_name }}</option>
+                                            <option value="{{ $role->name }}">{{ $role->role_intra ?? $role->name }}</option>
                                         @endforeach
                                     </select>
                                     <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">

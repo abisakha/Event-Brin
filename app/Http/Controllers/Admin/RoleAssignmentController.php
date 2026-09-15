@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Contracts\Roles\RoleAssignmentServiceInterface;
 use App\Http\Controllers\Controller;
+use App\Models\MasterRole;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -15,19 +16,23 @@ class RoleAssignmentController extends Controller
     ) {}
 
     public function index(): View
-{
-    return view('admin.roles.index', [
-        'title' => 'Manajemen Role & Permission',
-        'users' => $this->roleAssignmentService->allUsersWithRoles(),
-        'roles' => $this->roleAssignmentService->allRoles(),
-    ]);
-}
+    {
+        $this->authorize('viewAny', MasterRole::class);
+
+        return view('admin.roles.index', [
+            'title' => 'Manajemen Role & Permission',
+            'users' => $this->roleAssignmentService->allUsersWithRoles(),
+            'roles' => $this->roleAssignmentService->allRoles(),
+        ]);
+    }
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorize('create', MasterRole::class);
+
         $validated = $request->validate([
             'user_id' => ['required', 'integer', 'exists:users,id'],
-            'role_name' => ['required', 'string', 'exists:master_role,role_name'],
+            'role_name' => ['required', 'string', 'exists:master_role,name'],
         ]);
 
         $this->roleAssignmentService->assign($validated['user_id'], $validated['role_name']);
@@ -39,8 +44,12 @@ class RoleAssignmentController extends Controller
     {
         $validated = $request->validate([
             'user_id' => ['required', 'integer', 'exists:users,id'],
-            'role_name' => ['required', 'string', 'exists:master_role,role_name'],
+            'role_name' => ['required', 'string', 'exists:master_role,name'],
         ]);
+
+        $role = MasterRole::where('name', $validated['role_name'])->firstOrFail();
+
+        $this->authorize('delete', $role);
 
         $this->roleAssignmentService->revoke($validated['user_id'], $validated['role_name']);
 

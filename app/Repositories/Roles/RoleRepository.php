@@ -8,11 +8,11 @@ use Illuminate\Support\Collection;
 
 class RoleRepository implements RoleRepositoryInterface
 {
-    public function updateOrCreate(string $roleName, ?string $roleLabel = null): MasterRole
+    public function updateOrCreate(string $name, ?string $roleIntra = null): MasterRole
     {
         return MasterRole::updateOrCreate(
-            ['role_name' => $roleName],
-            ['role_label' => $roleLabel]
+            ['name' => $name],
+            ['role_intra' => $roleIntra]
         );
     }
 
@@ -21,8 +21,8 @@ class RoleRepository implements RoleRepositoryInterface
         return MasterRole::all();
     }
 
-    public function findByName(string $roleName): ?MasterRole
+    public function findByName(string $name): ?MasterRole
     {
-        return MasterRole::where('role_name', $roleName)->first();
+        return MasterRole::where('name', $name)->first();
     }
 }

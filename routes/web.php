@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleAssignmentController;
-
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
@@ -64,6 +64,17 @@ Route::get('/profile', function () {
     return view('user.profil.profil',[
         "title" => "Profile"
     ]);
+});
+
+// http://127.0.0.1:8000/dev-login/1 - buat testing, HAPUS setelah SSO (13138) beneran terintegrasi
+Route::get('/dev-login/{id}', function ($id) {
+    if (! app()->environment('local')) {
+        abort(404);
+    }
+
+    Auth::loginUsingId($id);
+
+    return redirect('/admin/roles');
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {

@@ -13,8 +13,8 @@ class MasterRole extends Model
     protected $table = 'master_role';
 
     protected $fillable = [
-        'role_name',
-        'role_label',
+        'name',
+        'role_intra',
     ];
 
     public function users(): BelongsToMany

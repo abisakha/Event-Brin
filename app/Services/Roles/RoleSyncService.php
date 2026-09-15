@@ -17,14 +17,14 @@ class RoleSyncService implements RoleSyncServiceInterface
 
         $count = 0;
 
-        foreach ($rolesFromIntra as $role) {
-            $this->roleRepository->updateOrCreate(
-                $role['role_name'],
-                $role['role_label'] ?? null
+            foreach ($rolesFromIntra as $role) {
+         $this->roleRepository->updateOrCreate(
+            $role['name'],
+            $role['role_intra'] ?? null
             );
 
-            $count++;
-        }
+             $count++;  
+    }
 
         return $count;
     }
@@ -36,10 +36,11 @@ class RoleSyncService implements RoleSyncServiceInterface
     protected function fetchRolesFromIntra(): array
     {
         return [
-         ['role_name' => 'platform_administrator', 'role_label' => 'Platform Administrator'],
-          ['role_name' => 'event_organizer', 'role_label' => 'Event Organizer'],
-          ['role_name' => 'event_officer', 'role_label' => 'Event Officer'],
-          ['role_name' => 'user', 'role_label' => 'User'],
-        ];
+            ['name' => 'platform_administrator', 'role_intra' => 'Platform Administrator'],
+            ['name' => 'event_organizer', 'role_intra' => 'Event Organizer'],
+            ['name' => 'event_officer', 'role_intra' => 'Event Officer'],
+            ['name' => 'user', 'role_intra' => 'User'],
+    ];
     }
+
 }
