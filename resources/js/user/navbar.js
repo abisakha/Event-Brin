@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded',()=>{
     const navbar=document.getElementById('navbar');
 
@@ -11,7 +12,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         navbar.classList.toggle('shadow-xl',scrolled);
         navbar.classList.toggle('shadow-slate-900/10',scrolled);
         navbar.classList.toggle('backdrop-blur-md',scrolled);
-
         navbar.classList.toggle('bg-transparent',!scrolled);
         navbar.classList.toggle('border-transparent',!scrolled);
         navbar.classList.toggle('shadow-none',!scrolled);

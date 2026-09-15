@@ -58,10 +58,10 @@
             <span>Attendance</span>
         </a>
 
-        <a href="{{ $activeEvent ? url('/admin/events/'.$activeEvent.'/surveys') : '#' }}" @class([
+        <a href="/admin/survey" @class([
             'flex items-center gap-3 rounded-lg px-4 py-3 font-medium transition',
-            'bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400'=>request()->is('admin/events/*/surveys'),
-            'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'=>!request()->is('admin/events/*/surveys')
+            'bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400'=>request()->is('/admin/survey'),
+            'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'=>!request()->is('/admin/survey')
         ])>
             <i data-lucide="clipboard-list" class="h-5 w-5"></i>
             <span>Surveys</span>

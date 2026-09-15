@@ -90,3 +90,17 @@ Route::get('admin/attendance', function () {
 
     ]);
 });
+
+Route::get('admin/survey', function () {
+    return view('admin.survey.survey',[
+        "title" => "Survey"
+
+    ]);
+});
+
+Route::get('admin/survey/responses', function () {
+    return view('admin.survey.responses',[
+        "title" => "Survey Responses"
+
+    ]);
+});
