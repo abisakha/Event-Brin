@@ -23,7 +23,8 @@ return new class extends Migration
             ->restrictOnDelete();
 
             $table->string('satker_name', 255);
-            $table->string('satker_type', 255);
+
+            $table->string('user_type', 255)->nullable();
 
             $table->string('name', 255);
             $table->string('email', 255)->unique();

@@ -35,7 +35,7 @@ class UserService
             'satker_id' => $satker->id,
             'satker_name' => $satker->unit_name,
 
-            'satker_type' => $ssoUser['pegawaiData']['affiliate_name'] ?? null,
+            'user_type' => null,
 
             'name' => $ssoUser['pegawaiData']['name'],
             'email' => $email,
