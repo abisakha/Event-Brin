@@ -26,7 +26,7 @@
             ]
         ],
         [
-            'name'=>'Dr. Sri Hartini, M.T.',
+            'name'=>'Dr. Sri Hartini, M.T Dr. Sri Hartini, M.T. Dr. Sri Hartini, M.TDr. Sri Hartini, M.TDr. Sri Hartini, M.T',
             'date'=>'Oct 15, 2026',
             'rating'=>'4.0',
             'comment'=>'Great panels. Food and logistics can be improved.',

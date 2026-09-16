@@ -20,3 +20,61 @@ document.addEventListener('DOMContentLoaded',()=>{
     updateNavbar();
     window.addEventListener('scroll',updateNavbar);
 });
+
+document.addEventListener('DOMContentLoaded',()=>{
+    const wrapper=document.getElementById('eventSearchWrapper');
+    const input=document.getElementById('eventSearchInput');
+    const suggestion=document.getElementById('eventSearchSuggestion');
+    const items=document.querySelectorAll('[data-event-suggestion]');
+    const empty=document.getElementById('eventSearchEmpty');
+    const count=document.getElementById('eventSuggestionCount');
+
+    if(!wrapper||!input||!suggestion)return;
+
+    const showSuggestions=()=>{
+        const keyword=input.value.trim().toLowerCase();
+        let total=0;
+
+        items.forEach(item=>{
+            const title=item.dataset.title||'';
+            const match=title.includes(keyword);
+
+            item.classList.toggle('hidden',!match);
+
+            if(match){
+                total++;
+            }
+        });
+
+        if(count){
+            count.textContent=total;
+        }
+
+        if(empty){
+            empty.classList.toggle('hidden',total>0);
+        }
+
+        suggestion.classList.remove('hidden');
+    };
+
+    const hideSuggestions=()=>{
+        suggestion.classList.add('hidden');
+    };
+
+    input.addEventListener('focus',showSuggestions);
+    input.addEventListener('click',showSuggestions);
+    input.addEventListener('input',showSuggestions);
+
+    document.addEventListener('click',event=>{
+        if(!wrapper.contains(event.target)){
+            hideSuggestions();
+        }
+    });
+
+    input.addEventListener('keydown',event=>{
+        if(event.key==='Escape'){
+            hideSuggestions();
+            input.blur();
+        }
+    });
+});

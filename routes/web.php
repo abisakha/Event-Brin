@@ -104,3 +104,33 @@ Route::get('admin/survey/responses', function () {
 
     ]);
 });
+
+Route::get('admin/survey/create-survey', function () {
+    return view('admin.survey.create-survey',[
+        "title" => "Survey create"
+
+    ]);
+});
+
+
+Route::get('admin/survey/create-survey/questions', function () {
+    return view('admin.survey.questions',[
+        "title" => "Survey create"
+
+    ]);
+});
+
+Route::get('admin/survey/review', function () {
+    return view('admin.survey.review-publish',[
+        "title" => "Survey create"
+
+    ]);
+});
+
+Route::get('admin/profile', function () {
+    return view('admin.profile.profile',[
+        "title" => "Profile"
+
+    ]);
+});
+

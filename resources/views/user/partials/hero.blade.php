@@ -1,4 +1,4 @@
-<!-- ================= HERO ================= -->
+{{-- hero --}}
 <section class="relative h-136 overflow-hidden">
     <img src="{{ asset('assets/images/Rectangle.png') }}" class="absolute inset-0 h-full w-full object-cover">
 
