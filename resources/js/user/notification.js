@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded',()=>{
     const filters=document.querySelectorAll('.notification-filter');
     const mobileFilter=document.getElementById('mobileNotificationFilter');
