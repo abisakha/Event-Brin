@@ -17,28 +17,28 @@
 
 <section id="surveyContent" class="p-4 sm:p-6 lg:p-8">
     <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div>
+        <div class="min-w-0 flex-1">
             <h1 class="text-shadow text-2xl font-bold text-slate-900 dark:text-white">Survey Management</h1>
             <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">National Research Innovation Summit 2026 — Post-Event Feedback & Surveys</p>
         </div>
 
-        <div class="flex flex-wrap gap-2">
-            <a href="/admin/survey/create-survey" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 ps-4 pe-4 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-700 dark:hover:bg-blue-950/40 dark:hover:text-blue-400">
+        <div class="flex shrink-0 flex-nowrap items-center gap-2">
+            <a href="/admin/survey/create-survey" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 ps-4 pe-4 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-700 dark:hover:bg-blue-950/40 dark:hover:text-blue-400">
                 <i data-lucide="plus" class="size-4"></i>
                 <span>Create Survey</span>
             </a>
 
-            <a href="/admin/survey/create-survey" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 ps-4 pe-4 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-700 dark:hover:bg-blue-950/40 dark:hover:text-blue-400">
+            <a href="/admin/survey/create-survey" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 ps-4 pe-4 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-700 dark:hover:bg-blue-950/40 dark:hover:text-blue-400">
                 <i data-lucide="pencil" class="size-4"></i>
                 <span>Edit Survey</span>
             </a>
 
-            <a href="/admin/survey/responses" class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 py-2.5 ps-4 pe-4 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md">
+            <a href="/admin/survey/responses" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-blue-600 py-2.5 ps-4 pe-4 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md">
                 <i data-lucide="chart-no-axes-column" class="size-4"></i>
                 <span>View Responses</span>
             </a>
 
-            <button id="openDeleteSurvey" type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 bg-white py-2.5 ps-4 pe-4 text-sm font-semibold text-red-500 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 active:scale-95 dark:border-red-900/60 dark:bg-slate-900 dark:text-red-400 dark:hover:bg-red-950/30">
+            <button id="openDeleteSurvey" type="button" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-red-200 bg-white py-2.5 ps-4 pe-4 text-sm font-semibold text-red-500 shadow-sm transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 active:scale-95 dark:border-red-900/60 dark:bg-slate-900 dark:text-red-400 dark:hover:bg-red-950/30">
                 <i data-lucide="trash-2" class="size-4"></i>
                 <span>Delete Survey</span>
             </button>

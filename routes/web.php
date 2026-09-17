@@ -134,3 +134,9 @@ Route::get('admin/profile', function () {
     ]);
 });
 
+Route::get('admin/roles', function () {
+    return view('admin.roles.role',[
+        "title" => "Manajemen Role"
+
+    ]);
+});
