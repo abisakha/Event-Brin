@@ -1,8 +1,8 @@
-@extends('user.layouts.main')
+@extends('admin.layouts.main')
 
 @section('content')
-    <div class="container mx-auto px-6 lg:px-0 py-10">
-        <h1 class="text-2xl font-extrabold text-slate-900 mb-6">Manajemen role_label & Permission</h1>
+    <div class="p-6">
+        <h1 class="text-xl font-semibold mb-4 dark:text-white">Manajemen Role & Permission</h1>
 
         @if (session('success'))
             <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
@@ -11,21 +11,21 @@
         @endif
 
         <div class="overflow-x-auto">
-            <table class="w-full border-collapse border border-gray-300">
+            <table class="w-full border-collapse border border-gray-300 dark:border-slate-700">
                 <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border border-gray-300 p-2 text-left">Nama User</th>
-                        <th class="border border-gray-300 p-2 text-left">Email</th>
-                        <th class="border border-gray-300 p-2 text-left">Role Saat Ini</th>
-                        <th class="border border-gray-300 p-2 text-left">Assign Role Baru</th>
+                    <tr class="bg-gray-100 dark:bg-slate-800">
+                        <th class="border border-gray-300 dark:border-slate-700 p-2 text-left">Nama User</th>
+                        <th class="border border-gray-300 dark:border-slate-700 p-2 text-left">Email</th>
+                        <th class="border border-gray-300 dark:border-slate-700 p-2 text-left">Role Saat Ini</th>
+                        <th class="border border-gray-300 dark:border-slate-700 p-2 text-left">Assign Role Baru</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td class="border border-gray-300 p-2">{{ $user->name }}</td>
-                            <td class="border border-gray-300 p-2">{{ $user->email }}</td>
-                            <td class="border border-gray-300 p-2">
+                            <td class="border border-gray-300 dark:border-slate-700 p-2">{{ $user->name }}</td>
+                            <td class="border border-gray-300 dark:border-slate-700 p-2">{{ $user->email }}</td>
+                            <td class="border border-gray-300 dark:border-slate-700 p-2">
                                 @forelse ($user->roles as $role)
                                     <span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm mr-1 mb-1">
                                         {{ $role->role_intra ?? $role->name }}
@@ -41,7 +41,7 @@
                                     <span class="text-gray-400 text-sm">Belum ada role</span>
                                 @endforelse
                             </td>
-                            <td class="border border-gray-300 p-2">
+                            <td class="border border-gray-300 dark:border-slate-700 p-2">
                                 <form action="{{ route('admin.roles.store') }}" method="POST" class="flex gap-2">
                                     @csrf
                                     <input type="hidden" name="user_id" value="{{ $user->id }}">
