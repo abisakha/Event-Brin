@@ -39,7 +39,7 @@ class RoleSyncService implements RoleSyncServiceInterface
             ['name' => 'platform_administrator', 'role_intra' => 'Platform Administrator'],
             ['name' => 'event_organizer', 'role_intra' => 'Event Organizer'],
             ['name' => 'event_officer', 'role_intra' => 'Event Officer'],
-            ['name' => 'user', 'role_intra' => 'User'],
+            ['name' => 'participant', 'role_intra' => 'Participant'],
     ];
     }
 

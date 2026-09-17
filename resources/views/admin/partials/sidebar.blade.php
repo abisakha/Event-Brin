@@ -1,5 +1,26 @@
 @php
     $activeEvent=session('active_event_id');
+
+    // Dummy sementara untuk tampilan
+    $isPlatformAdministrator=true;
+
+    /*
+    BACKEND LATER:
+
+    Contoh jika relasi user -> roles sudah tersedia:
+
+    $isPlatformAdministrator=auth()->check()
+        && auth()->user()->roles
+            ->contains(function($role){
+                return $role->name==='platform_administrator'
+                    || $role->role_intra==='Platform Administrator';
+            });
+
+    Atau jika menggunakan Spatie Permission:
+
+    $isPlatformAdministrator=auth()->user()
+        ->hasRole('Platform Administrator');
+    */
 @endphp
 
 <aside class="hidden w-64 shrink-0 border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 md:flex md:flex-col">
@@ -69,6 +90,30 @@
             <i data-lucide="clipboard-list" class="h-5 w-5"></i>
             <span>Surveys</span>
         </a>
+
+        @if($isPlatformAdministrator)
+            <div class="my-3 border-t border-slate-200 dark:border-slate-800"></div>
+
+            <a href="{{ url('/admin/roles') }}" @class([
+                'flex items-center gap-3 rounded-lg px-4 py-3 font-medium transition',
+                'bg-blue-100 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400'=>request()->is('admin/roles')||request()->is('admin/roles/*'),
+                'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'=>!request()->is('admin/roles')&&!request()->is('admin/roles/*')
+            ])>
+                <i data-lucide="shield-check" class="h-5 w-5"></i>
+                <span>Manajemen Role</span>
+            </a>
+
+            {{--
+            BACKEND LATER:
+            Menu ini hanya boleh tampil jika user mempunyai role:
+            Platform Administrator
+            @if(auth()->user()->hasRole('Platform Administrator'))
+                <a href="{{ url('/admin/roles') }}">
+                    Manajemen Role
+                </a>
+            @endif
+            --}}
+        @endif
     </nav>
 
     <div class="border-t border-slate-200 p-4 dark:border-slate-800">

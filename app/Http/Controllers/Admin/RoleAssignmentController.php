@@ -19,7 +19,7 @@ class RoleAssignmentController extends Controller
     {
         $this->authorize('viewAny', MasterRole::class);
 
-        return view('admin.roles.index', [
+        return view('admin.roles.role', [
             'title' => 'Manajemen Role & Permission',
             'users' => $this->roleAssignmentService->allUsersWithRoles(),
             'roles' => $this->roleAssignmentService->allRoles(),
