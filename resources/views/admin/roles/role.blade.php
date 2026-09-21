@@ -10,24 +10,28 @@
             'id'=>1,
             'name'=>'Holden Brakus',
             'email'=>'yazmin77@example.net',
+            'deputi'=>'Deputi Kebijakan Riset dan Inovasi',
             'roles'=>['Platform Administrator','Event Organizer']
         ],
         [
             'id'=>2,
             'name'=>'Dr. Sri Hartini, M.T.',
             'email'=>'sri.hartini@brin.go.id',
+            'deputi'=>'Deputi Sumber Daya Manusia IPTEK',
             'roles'=>['Event Officer']
         ],
         [
             'id'=>3,
             'name'=>'Ahmad Fauzi, M.Sc.',
             'email'=>'ahmad.fauzi@brin.go.id',
+            'deputi'=>'Deputi Infrastruktur Riset dan Inovasi',
             'roles'=>['User']
         ],
         [
             'id'=>4,
             'name'=>'Siti Rahma, Ph.D. Siti Rahma, Ph.D. Siti Rahma, Ph.D.',
             'email'=>'siti.rahma@brin.go.id',
+            'deputi'=>'Deputi Kebijakan Riset dan Inovasi',
             'roles'=>[]
         ]
     ];
@@ -38,6 +42,8 @@
         'Event Officer',
         'User'
     ];
+
+    $deputies=collect($users)->pluck('deputi')->unique()->values();
 
     $totalUsers=count($users);
     $totalRoles=count($roles);
@@ -137,12 +143,87 @@
         </div>
     </div>
 
+    {{-- Search, Filter & Bulk Assign --}}
+    <div class="mb-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex items-center gap-3">
+
+            {{-- Search --}}
+            <div class="relative min-w-64 flex-1">
+                <div class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
+                    <i data-lucide="search" class="size-4 text-slate-400"></i>
+                </div>
+                <input id="roleSearch"
+                       type="text"
+                       placeholder="Search user or email..."
+                       class="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 ps-10 pe-4 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            </div>
+
+            {{-- Filter Deputi --}}
+            <div class="relative min-w-64">
+                <select id="deputiFilter"
+                        class="w-full appearance-none rounded-lg border border-slate-200 bg-slate-50 py-2.5 ps-3 pe-9 text-sm text-slate-600 outline-none transition hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                    <option value="">All Deputi</option>
+
+                    @foreach($deputies as $deputi)
+                        <option value="{{ strtolower($deputi) }}">
+                            {{ $deputi }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <div class="pointer-events-none absolute inset-y-0 end-3 flex items-center">
+                    <i data-lucide="chevron-down" class="size-4 text-slate-400"></i>
+                </div>
+            </div>
+
+            {{-- Bulk Role --}}
+            <div class="relative min-w-48">
+                <select id="bulkRoleSelect"
+                        class="w-full appearance-none rounded-lg border border-slate-200 bg-slate-50 py-2.5 ps-3 pe-9 text-sm text-slate-600 outline-none transition hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                    <option value="">Select role</option>
+
+                    @foreach($roles as $role)
+                        <option value="{{ $role }}">
+                            {{ $role }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <div class="pointer-events-none absolute inset-y-0 end-3 flex items-center">
+                    <i data-lucide="chevron-down" class="size-4 text-slate-400"></i>
+                </div>
+            </div>
+
+            {{-- Bulk Assign --}}
+            <button id="bulkAssignButton"
+                    type="button"
+                    disabled
+                    class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md active:scale-95 disabled:cursor-not-allowed disabled:opacity-50">
+                <i data-lucide="users-round" class="size-4"></i>
+                <span>Assign Selected</span>
+            </button>
+        </div>
+
+        <div id="selectedInfo" class="mt-3 hidden items-center gap-2 text-xs font-medium text-blue-600 dark:text-blue-400">
+            <i data-lucide="check-square" class="size-4"></i>
+            <span><span id="selectedCount">0</span> user selected</span>
+        </div>
+    </div>
+
     {{-- Role Table --}}
     <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div class="overflow-x-auto">
             <table class="w-full min-w-5xl">
                 <thead>
                     <tr class="border-b border-slate-200 bg-slate-50 text-left dark:border-slate-800 dark:bg-slate-950/40">
+
+                        {{-- Select All --}}
+                        <th class="w-12 p-4">
+                            <input id="selectAllUsers"
+                                   type="checkbox"
+                                   class="size-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800">
+                        </th>
+
                         <th class="w-1/5 p-4 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                             User
                         </th>
@@ -163,7 +244,20 @@
 
                 <tbody>
                     @foreach($users as $user)
-                        <tr class="border-b border-slate-200 transition last:border-b-0 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/60">
+                        <tr data-user-row
+                            data-name="{{ strtolower($user['name']) }}"
+                            data-email="{{ strtolower($user['email']) }}"
+                            data-deputi="{{ strtolower($user['deputi']) }}"
+                            data-user-id="{{ $user['id'] }}"
+                            class="border-b border-slate-200 transition last:border-b-0 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/60">
+
+                            {{-- Checkbox --}}
+                            <td class="p-4">
+                                <input type="checkbox"
+                                       data-user-checkbox
+                                       value="{{ $user['id'] }}"
+                                       class="size-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-800">
+                            </td>
 
                             {{-- User --}}
                             <td class="p-4">
@@ -197,7 +291,7 @@
 
                             {{-- Current Roles --}}
                             <td class="p-4">
-                                <div class="flex flex-wrap gap-2">
+                                <div data-role-container class="flex flex-wrap gap-2">
                                     @forelse($user['roles'] as $role)
                                         @php
                                             $roleClass=match($role){
@@ -208,7 +302,7 @@
                                             };
                                         @endphp
 
-                                        <span class="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold {{ $roleClass }}">
+                                        <span data-role-badge="{{ $role }}" class="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold {{ $roleClass }}">
                                             <i data-lucide="shield" class="size-3.5"></i>
 
                                             <span>{{ $role }}</span>
@@ -234,7 +328,7 @@
                                             --}}
                                         </span>
                                     @empty
-                                        <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-400 dark:bg-slate-800">
+                                        <span data-no-role class="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-400 dark:bg-slate-800">
                                             <i data-lucide="circle-minus" class="size-3.5"></i>
                                             No role assigned
                                         </span>
@@ -282,6 +376,23 @@
                             </td>
                         </tr>
                     @endforeach
+
+                    {{-- Search Empty --}}
+                    <tr id="noUserResult" class="hidden">
+                        <td colspan="5" class="p-10 text-center">
+                            <div class="mx-auto flex size-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800">
+                                <i data-lucide="search-x" class="size-5"></i>
+                            </div>
+
+                            <p class="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                User not found
+                            </p>
+
+                            <p class="mt-1 text-xs text-slate-400">
+                                Try another search or deputi filter.
+                            </p>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -310,4 +421,5 @@
     @endforeach
     --}}
 </section>
+
 @endsection

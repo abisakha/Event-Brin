@@ -6,11 +6,12 @@
         </button>
 
         <a href="{{ url('/admin/profile') }}" class="flex items-center gap-3 rounded-lg p-1.5 no-underline! transition hover:bg-slate-100 dark:hover:bg-slate-800">
-            <img src="https://i.pravatar.cc/40" alt="Profile" class="h-10 w-10 rounded-full object-cover">
-
+                <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-600">
+                    {{ mb_strtoupper(mb_substr(auth()->user()->name ?? '',0,1)) }}
+                </span>
             <div class="hidden text-left md:block">
                 <p class="text-sm font-semibold text-slate-900 dark:text-white">
-                    Dr. Handoko
+                    {{ auth()->user()->name }}
                 </p>
 
                 <p class="text-xs text-slate-500 dark:text-slate-400">
@@ -20,3 +21,4 @@
         </a>
     </div>
 </header>
+

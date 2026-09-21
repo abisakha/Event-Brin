@@ -2,7 +2,7 @@
 
 
 @section('content')
-@php
+{{-- @php
     $user=[
         'id'=>1,
         'username_intra'=>'abisakha.saif',
@@ -13,7 +13,7 @@
         'email'=>'abisakha.alfath@brin.go.id',
         'status'=>true
     ];
-@endphp
+@endphp --}}
 
 <section class="p-4 sm:p-6 lg:p-8">
     <div class="mb-6">
@@ -40,15 +40,16 @@
                 <div class="p-4 sm:p-6">
                     <div class="mb-7 flex flex-col items-center">
                         <div class="flex size-20 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-                            {{ strtoupper(substr($user['name'],0,1)) }}
+
+                            {{ strtoupper(substr($user->name,0,2)) }}
                         </div>
 
                         <h3 class="mt-3 text-base font-bold text-slate-900 dark:text-white">
-                            {{ $user['name'] }}
+                            {{ $user->name }}
                         </h3>
 
                         <p class="mt-1 text-xs text-slate-400">
-                            {{ $user['email'] }}
+                            {{ $user->email }}
                         </p>
                     </div>
 

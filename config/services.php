@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'sso' => [
+        'client_id'     => env('OAUTH2_CLIENT_ID'),
+        'client_secret' => env('OAUTH2_CLIENT_SECRET'),
+        'redirect'      => env('OAUTH2_URL_REDIRECT_URI'),
+        'authorize_url' => env('OAUTH2_URL_AUTHORIZE'),
+        'token_url'    => env('OAUTH2_URL_ACCESSTOKEN'),
+        'userinfo_url' => env('OAUTH2_URL_USERINFO'),
+        'logout_url'   => env('OAUTH2_URL_LOGOUT'),
+    ],
+
 ];
