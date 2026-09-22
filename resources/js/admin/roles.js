@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded',()=>{
     const searchInput=document.getElementById('roleSearch');
-    const deputiFilter=document.getElementById('deputiFilter');
+    const clearSearch=document.getElementById('clearSearch');
+    const suggestions=document.getElementById('searchSuggestions');
+    const suggestionItems=[...document.querySelectorAll('[data-suggestion]')];
+    const noSuggestion=document.getElementById('noSuggestion');
+    const roleFilter=document.getElementById('roleFilter');
     const selectAll=document.getElementById('selectAllUsers');
     const checkboxes=[...document.querySelectorAll('[data-user-checkbox]')];
     const rows=[...document.querySelectorAll('[data-user-row]')];
@@ -9,159 +13,197 @@ document.addEventListener('DOMContentLoaded',()=>{
     const bulkAssignButton=document.getElementById('bulkAssignButton');
     const selectedInfo=document.getElementById('selectedInfo');
     const selectedCount=document.getElementById('selectedCount');
+    const modal=document.getElementById('roleConfirmModal');
+    const modalTitle=document.getElementById('modalTitle');
+    const modalMessage=document.getElementById('modalMessage');
+    const modalIcon=document.getElementById('modalIcon');
+    const modalCancel=document.getElementById('modalCancel');
+    const modalConfirm=document.getElementById('modalConfirm');
+    let confirmAction=null;
+
+    const openModal=(type,title,message,action)=>{
+        confirmAction=action;
+        modalTitle.textContent=title;
+        modalMessage.textContent=message;
+        modalConfirm.textContent=type==='remove'?'Remove Role':'Assign Role';
+        modalConfirm.className=type==='remove'?'rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700':'rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700';
+        modalIcon.className=type==='remove'?'mb-4 flex size-12 items-center justify-center rounded-full bg-red-100 text-red-600':'mb-4 flex size-12 items-center justify-center rounded-full bg-blue-100 text-blue-600';
+        modalIcon.innerHTML=type==='remove'?'<i data-lucide="shield-x" class="size-6"></i>':'<i data-lucide="shield-check" class="size-6"></i>';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        if(window.lucide) lucide.createIcons();
+    };
+
+    const closeModal=()=>{
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        confirmAction=null;
+    };
+
+    const updateSelectAll=()=>{
+        const visible=checkboxes.filter(c=>!c.closest('[data-user-row]').classList.contains('hidden'));
+        const checked=visible.filter(c=>c.checked);
+        selectAll.checked=visible.length>0&&checked.length===visible.length;
+        selectAll.indeterminate=checked.length>0&&checked.length<visible.length;
+    };
+
+    const updateSelected=()=>{
+        const selected=checkboxes.filter(c=>c.checked);
+        selectedCount.textContent=selected.length;
+        selectedInfo.classList.toggle('hidden',selected.length===0);
+        selectedInfo.classList.toggle('flex',selected.length>0);
+        bulkAssignButton.disabled=selected.length===0||!bulkRoleSelect.value;
+        updateSelectAll();
+    };
 
     const filterUsers=()=>{
         const search=searchInput.value.trim().toLowerCase();
-        const deputi=deputiFilter.value.toLowerCase();
+        const role=roleFilter.value.toLowerCase();
         let visibleCount=0;
 
         rows.forEach(row=>{
-            const name=row.dataset.name;
-            const email=row.dataset.email;
-            const rowDeputi=row.dataset.deputi;
-
+            const name=row.dataset.name??'';
+            const email=row.dataset.email??'';
+            const roles=(row.dataset.roles??'').split('|').filter(Boolean);
             const matchSearch=!search||name.includes(search)||email.includes(search);
-            const matchDeputi=!deputi||rowDeputi===deputi;
-            const visible=matchSearch&&matchDeputi;
-
+            const matchRole=!role||(role==='no-role'?roles.length===0:roles.includes(role));
+            const visible=matchSearch&&matchRole;
             row.classList.toggle('hidden',!visible);
-
             if(visible) visibleCount++;
         });
 
         noResult.classList.toggle('hidden',visibleCount>0);
+        clearSearch.classList.toggle('hidden',search.length===0);
         updateSelectAll();
     };
 
-    const updateSelected=()=>{
-        const selected=checkboxes.filter(checkbox=>checkbox.checked);
-
-        selectedCount.textContent=selected.length;
-        selectedInfo.classList.toggle('hidden',selected.length===0);
-        selectedInfo.classList.toggle('flex',selected.length>0);
-
-        bulkAssignButton.disabled=selected.length===0||!bulkRoleSelect.value;
-
-        updateSelectAll();
-    };
-
-    const updateSelectAll=()=>{
-        const visibleCheckboxes=checkboxes.filter(checkbox=>!checkbox.closest('[data-user-row]').classList.contains('hidden'));
-
-        if(visibleCheckboxes.length===0){
-            selectAll.checked=false;
-            selectAll.indeterminate=false;
+    const updateSuggestions=()=>{
+        const search=searchInput.value.trim().toLowerCase();
+        if(!search){
+            suggestions.classList.add('hidden');
+            suggestionItems.forEach(item=>item.classList.remove('hidden'));
             return;
         }
 
-        const checkedVisible=visibleCheckboxes.filter(checkbox=>checkbox.checked);
-
-        selectAll.checked=checkedVisible.length===visibleCheckboxes.length;
-        selectAll.indeterminate=checkedVisible.length>0&&checkedVisible.length<visibleCheckboxes.length;
-    };
-
-    const getRoleClass=role=>{
-        if(role==='Platform Administrator'){
-            return 'bg-violet-100 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400';
-        }
-
-        if(role==='Event Organizer'){
-            return 'bg-blue-100 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400';
-        }
-
-        if(role==='Event Officer'){
-            return 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400';
-        }
-
-        return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
-    };
-
-    const addRoleBadge=(row,role)=>{
-        const roleContainer=row.querySelector('[data-role-container]');
-        const existingRole=[...roleContainer.querySelectorAll('[data-role-badge]')]
-            .some(badge=>badge.dataset.roleBadge===role);
-
-        if(existingRole) return;
-
-        const noRole=roleContainer.querySelector('[data-no-role]');
-
-        if(noRole) noRole.remove();
-
-        const badge=document.createElement('span');
-
-        badge.dataset.roleBadge=role;
-        badge.className=`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold ${getRoleClass(role)}`;
-
-        badge.innerHTML=`
-            <i data-lucide="shield" class="size-3.5"></i>
-            <span>${role}</span>
-            <button type="button" title="Remove Role" class="ml-0.5 flex size-4 items-center justify-center rounded-full transition hover:bg-black/10">
-                <i data-lucide="x" class="size-3"></i>
-            </button>
-        `;
-
-        roleContainer.appendChild(badge);
-
-        if(window.lucide){
-            lucide.createIcons();
-        }
-    };
-
-    searchInput.addEventListener('input',filterUsers);
-    deputiFilter.addEventListener('change',filterUsers);
-
-    checkboxes.forEach(checkbox=>{
-        checkbox.addEventListener('change',updateSelected);
-    });
-
-    selectAll.addEventListener('change',()=>{
-        const visibleCheckboxes=checkboxes.filter(checkbox=>!checkbox.closest('[data-user-row]').classList.contains('hidden'));
-
-        visibleCheckboxes.forEach(checkbox=>{
-            checkbox.checked=selectAll.checked;
+        let count=0;
+        suggestionItems.forEach(item=>{
+            const visible=item.dataset.name.includes(search)||item.dataset.email.includes(search);
+            item.classList.toggle('hidden',!visible);
+            if(visible) count++;
         });
 
+        noSuggestion.classList.toggle('hidden',count>0);
+        suggestions.classList.remove('hidden');
+    };
+
+    searchInput.addEventListener('input',()=>{
+        filterUsers();
+        updateSuggestions();
+    });
+
+    searchInput.addEventListener('focus',()=>{
+        if(searchInput.value.trim()) updateSuggestions();
+    });
+
+    suggestionItems.forEach(item=>{
+        item.addEventListener('click',()=>{
+            searchInput.value=item.dataset.value;
+            suggestions.classList.add('hidden');
+            filterUsers();
+        });
+    });
+
+    clearSearch.addEventListener('click',()=>{
+        searchInput.value='';
+        suggestions.classList.add('hidden');
+        searchInput.focus();
+        filterUsers();
+    });
+
+    document.addEventListener('click',e=>{
+        if(!searchInput.contains(e.target)&&!suggestions.contains(e.target)) suggestions.classList.add('hidden');
+    });
+
+    roleFilter.addEventListener('change',filterUsers);
+    checkboxes.forEach(c=>c.addEventListener('change',updateSelected));
+
+    selectAll.addEventListener('change',()=>{
+        checkboxes.filter(c=>!c.closest('[data-user-row]').classList.contains('hidden')).forEach(c=>c.checked=selectAll.checked);
         updateSelected();
     });
 
     bulkRoleSelect.addEventListener('change',updateSelected);
 
+    document.querySelectorAll('[data-assign-role-form]').forEach(form=>{
+        form.addEventListener('submit',e=>{
+            e.preventDefault();
+            const select=form.querySelector('[data-role-select]');
+            if(!select.value) return;
+            const label=select.options[select.selectedIndex].dataset.label||select.options[select.selectedIndex].text;
+            openModal('assign','Assign Access Role',`Tambahkan access role "${label}" kepada ${form.dataset.userName}?`,()=>form.submit());
+        });
+    });
+
+    document.querySelectorAll('[data-remove-role-form]').forEach(form=>{
+        form.addEventListener('submit',e=>{
+            e.preventDefault();
+            openModal('remove','Remove Access Role',`Hapus access role "${form.dataset.roleName}" dari ${form.dataset.userName}?`,()=>form.submit());
+        });
+    });
+
     bulkAssignButton.addEventListener('click',()=>{
         const role=bulkRoleSelect.value;
-        const selectedCheckboxes=checkboxes.filter(checkbox=>checkbox.checked);
+        const selected=checkboxes.filter(c=>c.checked);
+        if(!role||!selected.length) return;
 
-        if(!role||selectedCheckboxes.length===0) return;
+        const option=bulkRoleSelect.options[bulkRoleSelect.selectedIndex];
+        const label=option.dataset.label||option.text;
 
-        selectedCheckboxes.forEach(checkbox=>{
-            const row=checkbox.closest('[data-user-row]');
-            addRoleBadge(row,role);
-            checkbox.checked=false;
+        openModal('assign','Bulk Assign Access Role',`Tambahkan access role "${label}" kepada ${selected.length} user yang dipilih?`,async()=>{
+            const oldHtml=bulkAssignButton.innerHTML;
+            bulkAssignButton.disabled=true;
+            bulkAssignButton.innerHTML='<span class="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span><span>Assigning...</span>';
+
+            try{
+                for(const checkbox of selected){
+                    const body=new URLSearchParams();
+                    body.append('_token','{{ csrf_token() }}');
+                    body.append('user_id',checkbox.value);
+                    body.append('role_name',role);
+
+                    const response=await fetch('{{ route('admin.roles.store') }}',{
+                        method:'POST',
+                        headers:{
+                            'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8',
+                            'X-Requested-With':'XMLHttpRequest',
+                            'Accept':'text/html,application/xhtml+xml'
+                        },
+                        body:body.toString()
+                    });
+
+                    if(!response.ok) throw new Error(`Assign gagal untuk user ${checkbox.value}`);
+                }
+
+                window.location.reload();
+            }catch(error){
+                console.error(error);
+                alert('Bulk assign gagal. Periksa Console/Network untuk melihat response backend.');
+                bulkAssignButton.innerHTML=oldHtml;
+                updateSelected();
+            }
         });
+    });
 
-        bulkRoleSelect.value='';
-        selectAll.checked=false;
-
-        updateSelected();
-
-        /*
-        BACKEND LATER:
-
-        const userIds=selectedCheckboxes.map(checkbox=>checkbox.value);
-
-        fetch('/admin/roles/bulk',{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
-            },
-            body:JSON.stringify({
-                user_ids:userIds,
-                role_name:role
-            })
-        });
-        */
+    modalCancel.addEventListener('click',closeModal);
+    modal.addEventListener('click',e=>{if(e.target===modal) closeModal();});
+    modalConfirm.addEventListener('click',()=>{
+        if(!confirmAction) return;
+        const action=confirmAction;
+        closeModal();
+        action();
     });
 
     filterUsers();
     updateSelected();
+    if(window.lucide) lucide.createIcons();
 });

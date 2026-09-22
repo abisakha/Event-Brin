@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Auth\SsoController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\RoleAssignmentController;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -197,11 +198,28 @@ Route::middleware(['auth','check.user'])->group(function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/admin/roles',function(){
-        return view('admin.roles.role',[
-            'title'=>'Manajemen Role'
-        ]);
-    });
+        // http://127.0.0.1:8000/dev-login/1 - buat testing, HAPUS setelah SSO (13138) beneran terintegrasi
+        Route::get('/dev-login/{id}', function ($id) {
+            if (! app()->environment('local')) {
+                abort(404);
+            }
+
+            Auth::loginUsingId($id);
+
+            return redirect('/admin/roles');
+        });
+
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::get('/roles', [RoleAssignmentController::class, 'index'])->name('roles.index');
+            Route::post('/roles', [RoleAssignmentController::class, 'store'])->name('roles.store');
+            Route::delete('/roles', [RoleAssignmentController::class, 'destroy'])->name('roles.destroy');
+        });
+
 
 
 });
+
+
+
+
+

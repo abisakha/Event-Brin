@@ -3,14 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Registration;
+use App\Models\Satker;
+use App\Models\SurveyAnswer;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['username_intra', 'satker_id', 'satker_name', 'user_type', 'name', 'email', 'password', 'status'])]
 #[Hidden(['password'])]
@@ -51,4 +55,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(SurveyAnswer::class, 'user_id');
     }
+     public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(MasterRole::class, 'user_role', 'user_id', 'master_role_id');
+    }
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()->where('name', $roleName)->exists();
+    }
+
+
 }
+
+
+
+
+
+

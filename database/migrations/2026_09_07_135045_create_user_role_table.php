@@ -12,9 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_role', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
-            $table->foreignId('master_role_id')->constrained('master_role')->restrictOnDelete();
-            
+            $table->foreignId('user_id')
+            ->constrained('users')
+            ->restrictOnDelete();
+
+            $table->foreignId('master_role_id')
+            ->constrained('master_role')
+            ->restrictOnDelete();
+
             $table->unique(['user_id', 'master_role_id']);
         });
     }

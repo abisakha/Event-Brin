@@ -11,7 +11,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+       $this->app->bind(
+          \App\Contracts\Roles\RoleRepositoryInterface::class,
+           \App\Repositories\Roles\RoleRepository::class
+        );
+
+       $this->app->bind(
+           \App\Contracts\Roles\RoleSyncServiceInterface::class,
+           \App\Services\Roles\RoleSyncService::class
+        );
+
+      $this->app->bind(
+         \App\Contracts\Roles\RoleAssignmentServiceInterface::class,
+            \App\Services\Roles\RoleAssignmentService::class
+        );
     }
 
     /**

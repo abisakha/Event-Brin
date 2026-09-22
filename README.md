@@ -17,12 +17,10 @@ Project ini dikembangkan menggunakan framework Laravel dengan implementasi antar
 # Teknologi
 
 ## Backend
-
 - Laravel 13
 - PHP 8.3+
 
 ## Frontend
-
 - Laravel Blade
 - Tailwind CSS
 - JavaScript

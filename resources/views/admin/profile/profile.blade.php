@@ -2,7 +2,11 @@
 
 
 @section('content')
+<<<<<<< HEAD
 {{-- @php
+=======
+@php
+>>>>>>> origin/Faris-Dev
     $user=[
         'id'=>1,
         'username_intra'=>'abisakha.saif',

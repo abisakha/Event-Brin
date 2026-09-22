@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 
 class MasterRole extends Model
 {
+    use HasFactory;
+
     protected $table = 'master_role';
 
     protected $fillable = [
@@ -14,8 +19,8 @@ class MasterRole extends Model
         'role_intra',
     ];
 
-    public function userRoles(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(UserRole::class, 'master_role_id');
+        return $this->belongsToMany(User::class, 'user_role', 'master_role_id', 'user_id');
     }
 }

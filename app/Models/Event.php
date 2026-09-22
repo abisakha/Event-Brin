@@ -16,6 +16,7 @@ class Event extends Model
         'satker_name',
         'user_id',
         'event_name',
+        'event_image',
         'description',
         'location',
         'start_date',
@@ -27,7 +28,7 @@ class Event extends Model
     ];
 
     protected function casts(): array  {
-        return [    
+        return [
             'start_date' => 'datetime',
             'end_date' => 'datetime',
             'registration_start' => 'datetime',

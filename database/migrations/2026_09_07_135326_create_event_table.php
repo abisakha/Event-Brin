@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('event', function (Blueprint $table) {
             $table->id();
 
+            // buat kolom satker id
             $table->foreignId('satker_id')
+            // yang valuenya isinya id di table satker
                 ->constrained('satker')
+            // tidak mengizinkan user di hapus selagi masih di pakai event
                 ->restrictOnDelete();
 
             $table->string('satker_name', 255);
@@ -25,7 +28,9 @@ return new class extends Migration
                 ->restrictOnDelete();
 
             $table->string('event_name', 255);
-            $table->string('description', 255)->nullable();
+            // image coleh null atau kosong
+            $table->string('event_image', 255)->nullable();
+            $table->text('description')->nullable();
             $table->string('location', 255);
 
             $table->timestamp('start_date');
