@@ -16,8 +16,13 @@ class StoreEventRequest extends FormRequest
         return [
             'satker_id' => ['required', 'integer', 'exists:satker,id'],
             'event_name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string', 'max:255'],
+
+            // maxnya itu mb nya. dan mimes formatnya
+            'event_image' => ['required', 'image', 'mimes:jpeg, png, jpg, webp', 'max:5120'],
+            'description' => ['nullable', 'string'],
             'location' => ['required', 'string', 'max:255'],
+            'format' => ['required', 'string','in:offline,online'],
+            'location_area' => ['nullable', 'string','max:255'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date'],
             'registration_start' => ['required', 'date'],

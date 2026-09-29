@@ -94,7 +94,7 @@
 
                 {{-- Events --}}
                 <li>
-                    <a href="{{ route('events') }}" class="group relative flex h-9 items-center text-sm font-medium no-underline! transition duration-300 hover:-translate-y-1 hover:text-blue-600! {{ request()->is('event*') ? 'text-blue-600!' : 'text-gray-900!' }}">
+                    <a href="{{ route('event') }}" class="group relative flex h-9 items-center text-sm font-medium no-underline! transition duration-300 hover:-translate-y-1 hover:text-blue-600! {{ request()->is('event*') ? 'text-blue-600!' : 'text-gray-900!' }}">
                         Events
                         <span class="absolute -bottom-1 left-0 h-0.5 bg-blue-600 transition-all duration-300 {{ request()->is('event*') ? 'w-full' : 'w-0 group-hover:w-full' }}"></span>
                     </a>

@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\Auth\SsoController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Event\EventController;
 use App\Http\Controllers\Admin\RoleAssignmentController;
+use App\Http\Controllers\Auth\SsoController;
+use App\Http\Controllers\User\Event\EventsController;
+use App\Http\Controllers\User\Home\HomeController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -32,18 +35,16 @@ use Illuminate\Support\Facades\Auth;
 | public Pages
 |--------------------------------------------------------------------------
 */
-    Route::get('/',function(){
-        return view('user.home',[
-            'title'=>'Home'
-        ]);
-    })->name('home');
+    Route::get('/',[HomeController::class,'index'])->name('home');
 
 
-    Route::get('/event',function(){
-        return view('user.events.event',[
-            'title'=>'Event'
-        ]);
-    })->name('events');
+    Route::get('/event',[EventsController::class,'index'])->name('event');
+
+    // Route::get('/event',function(){
+    //     return view('user.events.event',[
+    //         'title'=>'Event'
+    //     ]);
+    // })->name('events');
 
     Route::get('/calendar',function(){
         return view('user.calendar.calendar',[
@@ -116,18 +117,18 @@ Route::middleware(['auth','check.user'])->group(function(){
         ]);
     })->name('dashboard');
 
-    Route::get('/admin/events',function(){
-        return view('admin.events.event',[
-            'title'=>'Events'
-        ]);
-    });
+    // menampilkan event
+    Route::get('/admin/events',[EventController::class,'index'])->name('admin-event');
 
-    Route::get('/admin/events/create-event',function(){
-        return view('admin.events.create-event',[
-            'title'=>'Create Event'
-        ]);
-    });
+    Route::get('/admin/events/create-event', [EventController::class,'create']);
 
+    Route::post('/admin/event', [EventController::class,'store'])->name('admin.events.store');
+
+    Route::get('/admin/events/{event}/edit', [EventController::class, 'edit'])->name('admin.events.edit');
+    // kenapa pakai put
+    Route::put('/admin/events/{event}', [EventController::class, 'update'])->name('admin.events.update');
+    Route::delete('/admin/events/{event}', [EventController::class, 'destroy'])
+    ->name('admin.events.destroy');
     Route::get('/admin/registration',function(){
         return view('admin.registration.registration',[
             'title'=>'Registration'
