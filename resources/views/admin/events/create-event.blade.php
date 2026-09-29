@@ -8,13 +8,6 @@
         <h1 class="text-shadow text-2xl font-bold text-slate-900 dark:text-white">Create New Event</h1>
         <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Set up registration details, schedules, and locations for your science forum.</p>
     </div>
-
-    {{--
-
-    <form action="{{ url('/admin/events') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-    --}}
-
     <form id="createEventForm" class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div class="space-y-8 p-4 sm:p-6 lg:p-8">
             <section>
@@ -32,14 +25,6 @@
                             Event Title <span class="text-red-500">*</span>
                         </label>
                         <input id="title" type="text" name="title" placeholder="e.g. National Research Innovation Summit 2026" class="w-full rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:border-slate-600 dark:focus:border-blue-500 dark:focus:bg-slate-800">
-
-                        {{--
-
-                        value="{{ old('title') }}"
-                        @error('title')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                        --}}
                     </div>
 
                     <div>
@@ -113,15 +98,7 @@
                             </div>
                         </div>
                     </div>
-
                     <p id="eventImageError" class="mt-2 hidden text-xs font-medium text-red-500"></p>
-
-                    {{--
-
-                    @error('image')
-                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                    @enderror
-                    --}}
                 </div>
             </section>
 
@@ -242,28 +219,15 @@
         </div>
 
         <div class="flex flex-col-reverse gap-3 border-t border-slate-200 p-4 sm:flex-row sm:justify-end sm:p-6 dark:border-slate-800">
-            {{--
-
-            <button type="submit" name="action" value="draft">
-            --}}
-
             <button type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 ps-5 pe-5 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 active:scale-95 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">
                 <i data-lucide="save" class="h-4 w-4"></i>
                 <span>Save as Draft</span>
             </button>
-
-            {{--
-
-            <button type="submit" name="action" value="publish">
-        --}}
-
             <button type="button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 py-2.5 ps-5 pe-5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg active:scale-95">
                 <i data-lucide="send" class="h-4 w-4"></i>
                 <span>Publish Event</span>
             </button>
         </div>
     </form>
-
-    {{--</form>--}}
 </section>
 @endsection
