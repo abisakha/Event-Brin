@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded',()=>{
     const searchInput=document.getElementById('roleSearch');
     const clearSearch=document.getElementById('clearSearch');
@@ -171,14 +172,14 @@ document.addEventListener('DOMContentLoaded',()=>{
                     body.append('user_id',checkbox.value);
                     body.append('role_name',role);
 
-                    const response=await fetch('{{ route('admin.roles.store') }}',{
-                        method:'POST',
-                        headers:{
-                            'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8',
-                            'X-Requested-With':'XMLHttpRequest',
-                            'Accept':'text/html,application/xhtml+xml'
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html,application/xhtml+xml'
                         },
-                        body:body.toString()
+                        body: body.toString()
                     });
 
                     if(!response.ok) throw new Error(`Assign gagal untuk user ${checkbox.value}`);
@@ -207,3 +208,4 @@ document.addEventListener('DOMContentLoaded',()=>{
     updateSelected();
     if(window.lucide) lucide.createIcons();
 });
+

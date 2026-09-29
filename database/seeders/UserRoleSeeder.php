@@ -26,6 +26,7 @@ class UserRoleSeeder extends Seeder
                 'user_id' => $userParticipant->id,
                 'master_role_id' => $participant->id,
             ],
+
         ]);
     }
 }

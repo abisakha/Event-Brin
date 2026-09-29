@@ -28,17 +28,19 @@ return new class extends Migration
                 ->restrictOnDelete();
 
             $table->string('event_name', 255);
-            // image coleh null atau kosong
-            $table->string('event_image', 255)->nullable();
+            $table->string('event_image', 255);
             $table->text('description')->nullable();
-            $table->string('location', 255);
 
+            $table->string('format', 255);
+            $table->string('location_area', 255)->nullable();
+            $table->string('location', 255);
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->timestamp('registration_start');
             $table->timestamp('registration_end');
 
-            $table->integer('quota');
+            // hanya boleh bilangan 0 atau posistif
+            $table->unsignedBigInteger('quota');
             $table->string('status', 255);
 
             $table->timestamps();

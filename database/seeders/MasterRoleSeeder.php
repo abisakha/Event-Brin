@@ -18,5 +18,10 @@ class MasterRoleSeeder extends Seeder
             'name' => 'Participant',
             'role_intra' => 'participant',
         ]);
+
+          MasterRole::create([
+            'name' => 'platform_administrator',
+            'role_intra' => 'Platform Administrator',
+        ]);
     }
 }
